@@ -1,15 +1,16 @@
-export default function Attribute({
+export default function Skills({
   value,
   increment,
   decrement,
-  attr_value,
+  attribute,
+  skill_value,
   modifier_value,
   disable,
 }) {
   return (
-    <div className="att-value">
+    <div className="skill-value">
       <span>
-        {value} : {attr_value}
+        {value} : {skill_value}
       </span>
       <span>
         <button
@@ -23,7 +24,10 @@ export default function Attribute({
           -
         </button>
       </span>
-      <span> Modifier : {modifier_value}</span>
+      <span>
+        {" "}
+        {attribute} Modifier : {modifier_value}
+      </span>
     </div>
   );
 }

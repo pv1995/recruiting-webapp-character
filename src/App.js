@@ -28,7 +28,14 @@ function App() {
       "https://recruiting.verylongdomaintotestwith.ca/api/{pv1995}/character"
     )
       .then((response) => response.json())
-      .then((data) => console.log(data));
+      .then((data) =>
+        setGame({
+          characters: data.body.characters,
+          current_character: data.body.current_character,
+          current_roll: data.body.current_roll,
+          roll_history: data.body.roll_history,
+        })
+      );
   }, []);
 
   function resetCharacter() {
@@ -50,8 +57,17 @@ function App() {
         body: JSON.stringify(game),
       }
     )
-      .then((response) => response.json())
-      .then((data) => console.log(data));
+      .then((response) => {
+        if (response.status === 200) {
+          console.log("succesfull");
+          window.alert("Charaters Saved Successfully!");
+        } else {
+          throw new Error("Invalid credentials");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   function checkAndUpdateModifier(attr_key, index) {
@@ -82,6 +98,13 @@ function App() {
       wizard: isWizard(game.characters[index].attributes),
       bard: isBard(game.characters[index].attributes),
     };
+    updateGame(newArray);
+  }
+  function updateACharacterSkills(key, index, type) {
+    const newArray = Array.from(game.characters);
+    type === "add"
+      ? newArray[index].skills[key].value++
+      : newArray[index].attributes[key].value--;
     updateGame(newArray);
   }
 
@@ -119,6 +142,7 @@ function App() {
                 data={character}
                 index={index}
                 updateACharacterAttrs={updateACharacterAttrs}
+                updateACharacterSkills={updateACharacterSkills}
               />
             ))}
           </div>

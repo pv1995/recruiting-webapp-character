@@ -3,10 +3,16 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { CLASS_LIST } from "../consts.js";
 import Attribute from "./Attribute";
+import Skills from "./Skills";
 import CharacterClass from "./CharacterClass";
 import Modal from "./Modal";
 
-function Character({ data, index, updateACharacterAttrs }) {
+function Character({
+  data,
+  index,
+  updateACharacterAttrs,
+  updateACharacterSkills,
+}) {
   const [showModal, setShowModal] = useState({
     display: false,
     content: null,
@@ -62,6 +68,29 @@ function Character({ data, index, updateACharacterAttrs }) {
                 <CharacterClass value={c_name} />
               </div>
             ))}
+          </div>
+          <div className="char-skills">
+            <h4> SKILLS </h4>
+            <ul>
+              {Object.keys(data.skills).map((key) => (
+                <li key={key}>
+                  <Skills
+                    value={key}
+                    increment={() => updateACharacterSkills(key, index, "add")}
+                    decrement={() =>
+                      updateACharacterSkills(key, index, "subtract")
+                    }
+                    attribute={data.skills[key].attribute}
+                    skill_value={data.skills[key].value}
+                    modifier_value={
+                      data.attributes[data.skills[key].attribute].modifier
+                    }
+                    disable={!data.isModifyAllowed}
+                    val={data.skills[key]}
+                  />
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </div>
